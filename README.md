@@ -13,7 +13,7 @@ Assumptions
 
 4- You have an existing "default" VPC provided by your AWS account.
 
-5- The App repository has an buildspec.yml file
+5- The App repository has an buildspec.yml file like for example https://github.com/maolopez/ut_anagramma/blob/develop/buildspec.yml
 
 6- You may need AWS GitHub App
 
