@@ -5,5 +5,5 @@ variable "ecr_repo_name" {
 
 variable "scan_on_push" {
   description = "The name of the repository on ECR"
-  type        = Bool
+  type        = bool
 }
