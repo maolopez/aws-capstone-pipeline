@@ -5,6 +5,7 @@ module "my_ecr" {
 
 }
 
+
 module "my_pipeline" {
   source = "../TF_modules/Pipeline/"
   ecr_repo_name = "ut_anagramma"
@@ -12,3 +13,4 @@ module "my_pipeline" {
   code_pipeline_name = "ut_anagramma"
 
 }
+
