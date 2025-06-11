@@ -8,5 +8,7 @@ module "my_ecr" {
 module "my_pipeline" {
   source = "../TF_modules/Pipeline/"
   ecr_repo_name = "ut_anagramma"
+  branch_name = "develop"
+  code_pipeline_name = "ut_anagramma"
 
 }

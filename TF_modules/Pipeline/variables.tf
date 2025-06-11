@@ -31,9 +31,6 @@ phases:
       - echo "Install python dependencies"
       - python -m pip install --upgrade pip
       - if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-      # - echo "Run tests"
-      # - python -m pip install flake8 pytest
-      # - pytest
 EOL
 }
 

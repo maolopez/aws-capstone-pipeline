@@ -161,6 +161,17 @@ resource "aws_codepipeline" "pipeline" {
     type     = "S3"
   }
 
+  trigger {
+    git_configuration {
+        source_action_name = "CodeConnections"
+        push {
+            branches {
+                includes = var.branch_name
+            }
+        }
+    }
+  }
+
   stage {
     name = "Source"
 
