@@ -46,7 +46,8 @@ terraform plan
 terraform apply --auto-approve
 
 
-REFERENCES:
+REFERENCES
+-----
 
 https://github.com/maolopez/ut_anagramma
 
