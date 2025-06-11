@@ -1,6 +1,6 @@
 module "my_ecr" {
   source = "../TF_modules/ECR/"
-  ecr_repo_name = "ut_anagramma"
+  ecr_repo_name = var.ecr_repo_name
   scan_on_push = false
 
 }
