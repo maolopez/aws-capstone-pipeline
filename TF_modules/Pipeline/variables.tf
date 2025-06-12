@@ -1,3 +1,8 @@
+variable "region" {
+  type        = string
+  description = "default region"
+}
+
 variable "connection_arn" {
   description = "The CodeConnections ARN for your source repository."
   type        = string
@@ -16,7 +21,13 @@ variable "branch_name" {
 variable "code_pipeline_name" {
   description = "The CodePipeline pipeline name that will build your python source project."
   type        = string
-  default     = "SimplePythonBuildService"
+
+}
+
+variable "code_build_name" {
+  description = "The CodeBuild build name that will build your python source project."
+  type        = string
+
 }
 
 variable "ci_code_build_spec" {

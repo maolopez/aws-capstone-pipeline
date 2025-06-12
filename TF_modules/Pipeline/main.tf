@@ -1,5 +1,5 @@
 provider "aws" {
-  region = "us-east-1"
+  region = var.region
 }
 
 data "aws_partition" "current" {}
@@ -8,9 +8,6 @@ data "aws_region" "current" {}
 
 data "aws_caller_identity" "current" {}
 
-locals {
-  project_name = "SimplePythonBuildProject"
-}
 
 resource "aws_iam_role" "code_build_role" {
   name = "CodeBuildRole"
@@ -33,13 +30,13 @@ resource "aws_iam_policy" "code_build_default_policy" {
         Effect = "Allow"
         Action = ["logs:CreateLogGroup", "logs:CreateLogStream", "logs:PutLogEvents"]
         Resource = [
-          "arn:${data.aws_partition.current.partition}:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:/aws/codebuild/${local.project_name}*"
+          "arn:${data.aws_partition.current.partition}:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:/aws/codebuild/${var.code_build_name}*"
         ]
       },
       {
         Effect   = "Allow"
         Action   = ["codebuild:BatchPutCodeCoverages", "codebuild:BatchPutTestCases", "codebuild:CreateReport", "codebuild:CreateReportGroup", "codebuild:UpdateReport"]
-        Resource = "arn:${data.aws_partition.current.partition}:codebuild:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:report-group/${local.project_name}-*"
+        Resource = "arn:${data.aws_partition.current.partition}:codebuild:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:report-group/${var.code_build_name}-*"
       },
       {
         Effect   = "Allow"
@@ -52,7 +49,7 @@ resource "aws_iam_policy" "code_build_default_policy" {
 }
 
 resource "aws_codebuild_project" "code_build_project" {
-  name         = local.project_name
+  name         = var.code_build_name
   description  = "Build python source code"
   service_role = aws_iam_role.code_build_role.arn
 
