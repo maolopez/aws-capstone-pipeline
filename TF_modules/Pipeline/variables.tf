@@ -22,7 +22,7 @@ variable "code_pipeline_name" {
 variable "ci_code_build_spec" {
   description = "The CodeBuild project build spec python configuration"
   type        = string
-  default = <<EOL
+  default     = <<EOL
 version: 0.2
 
 phases:
