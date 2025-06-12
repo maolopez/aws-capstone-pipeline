@@ -75,7 +75,7 @@ resource "aws_codebuild_project" "code_build_project" {
 }
 
 resource "aws_s3_bucket" "code_pipeline_artifacts_bucket" {
-  bucket = "code-pipeline-artifacts-bucket"
+  bucket = "${var.code_pipeline_name}-bucket"
 
 }
 

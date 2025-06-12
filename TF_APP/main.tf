@@ -1,11 +1,12 @@
 resource "random_string" "suffix" {
-  length  = 4
+  length  = 5
   special = false
+  upper   = false
 }
 
 module "my_ecr" {
   source        = "../TF_modules/ECR/"
-  ecr_repo_name = local.ecr_repo_name
+  ecr_repo_name = local.ecr_repo_name # 'must satisfy regular expression '(?:[a-z0-9]+(?:[._-][a-z0-9]+)*/)*[a-z0-9]+(?:[._-][a-z0-9]+)*''
   scan_on_push  = local.scan_on_push
 
 }
