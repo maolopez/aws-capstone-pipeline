@@ -40,7 +40,7 @@ resource "aws_iam_policy" "code_build_default_policy" {
       },
       {
         Effect   = "Allow"
-        Action   = ["s3:GetBucket*", "s3:GetObject*", "s3:List*"]
+        Action   = ["s3:GetBucket*", "s3:GetObject*", "s3:List*", "s3:PutObject"]
         Resource = "${aws_s3_bucket.code_pipeline_artifacts_bucket.arn}/*"
       }
     ]
