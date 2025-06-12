@@ -188,10 +188,7 @@ resource "aws_codepipeline" "pipeline" {
         ProjectName = aws_codebuild_project.code_build_project.name
       }
     }
-  }
 
-  stage {
-    name = "push-to-ecr"
 
     action {
       name            = "push-to-ecr"
