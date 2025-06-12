@@ -40,12 +40,17 @@ resource "aws_iam_policy" "code_build_default_policy" {
       },
       {
         Effect   = "Allow"
-        Action   = ["s3:GetBucket*", "s3:GetObject*", "s3:List*"]
+        Action   = ["s3:GetBucket*", "s3:GetObject*", "s3:List*", "s3:PutObject"]
         Resource = "${aws_s3_bucket.code_pipeline_artifacts_bucket.arn}/*"
       }
     ]
   })
   # roles = [aws_iam_role.code_build_role.name]
+}
+
+resource "aws_iam_role_policy_attachment" "attach_codebuild_policy" {
+  policy_arn = aws_iam_policy.code_build_default_policy.arn
+  role       = aws_iam_role.code_build_role.name
 }
 
 resource "aws_codebuild_project" "code_build_project" {
@@ -132,7 +137,21 @@ resource "aws_iam_policy" "code_pipeline_default_policy" {
       }
     ]
   })
-  #roles = [aws_iam_role.code_pipeline_role.name]
+}
+
+resource "aws_iam_policy" "github_ecr_policy" {
+  name   = "GithubEcrPolycy"
+  policy = file("../TF_modules/Pipeline/github-ecr-interact.json")
+}
+
+resource "aws_iam_role_policy_attachment" "attach_codepipeline_policy" {
+  policy_arn = aws_iam_policy.code_pipeline_default_policy.arn
+  role       = aws_iam_role.code_pipeline_role.name
+}
+
+resource "aws_iam_role_policy_attachment" "attach_github_ecr_policy" {
+  policy_arn = aws_iam_policy.github_ecr_policy.arn
+  role       = aws_iam_role.code_pipeline_role.name
 }
 
 resource "aws_codepipeline" "pipeline" {
@@ -177,12 +196,12 @@ resource "aws_codepipeline" "pipeline" {
     name = "Build_and_deploy"
 
     action {
-      name             = "CI_Python_Build_Push"
-      category         = "Build"
-      owner            = "AWS"
-      provider         = "CodeBuild"
-      version          = "1"
-      input_artifacts  = ["SourceOutput"]
+      name            = "CI_Python_Build_Push"
+      category        = "Build"
+      owner           = "AWS"
+      provider        = "CodeBuild"
+      version         = "1"
+      input_artifacts = ["SourceOutput"]
       configuration = {
         ProjectName = aws_codebuild_project.code_build_project.name
       }
