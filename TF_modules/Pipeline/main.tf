@@ -174,31 +174,17 @@ resource "aws_codepipeline" "pipeline" {
   }
 
   stage {
-    name = "PythonBuild"
+    name = "Build_and_deploy"
 
     action {
-      name             = "CI_Python_Build"
+      name             = "CI_Python_Build_Push"
       category         = "Build"
       owner            = "AWS"
       provider         = "CodeBuild"
       version          = "1"
       input_artifacts  = ["SourceOutput"]
-      output_artifacts = ["SourceOutput2"]
       configuration = {
         ProjectName = aws_codebuild_project.code_build_project.name
-      }
-    }
-
-
-    action {
-      name            = "push-to-ecr"
-      category        = "Source"
-      owner           = "AWS"
-      provider        = "ECR"
-      version         = "1"
-      input_artifacts = ["SourceOutput2"]
-      configuration = {
-        RepositoryName = var.ecr_repo_name # coming from Module ECR
       }
     }
   }
