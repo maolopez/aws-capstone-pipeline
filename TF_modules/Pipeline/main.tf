@@ -193,17 +193,21 @@ resource "aws_codepipeline" "pipeline" {
   }
 
   stage {
-    name = "Build_and_deploy"
+    name = "Build"
 
     action {
-      name            = "CI_Python_Build_Push"
+      name            = "Build"
       category        = "Build"
       owner           = "AWS"
       provider        = "CodeBuild"
       version         = "1"
       input_artifacts = ["SourceOutput"]
+      output_artifacts = ["BuildOutput]
       configuration = {
         ProjectName = aws_codebuild_project.code_build_project.name
+        #ConnectionArn    = var.connection_arn
+        #FullRepositoryId = var.full_repository_id
+        #BranchName       = var.branch_name        
       }
     }
   }
