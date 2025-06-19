@@ -52,6 +52,12 @@ resource "aws_iam_role_policy_attachment" "attach_codebuild_policy" {
   role       = aws_iam_role.code_build_role.name
 }
 
+resource "aws_codebuild_source_credential" "example" {
+  auth_type   = "CODECONNECTIONS"
+  server_type = "GITHUB"
+  token       = var.connection_arn
+}
+
 resource "aws_codebuild_project" "code_build_project" {
   name         = var.code_build_name
   description  = "Build python source code"
@@ -74,7 +80,7 @@ resource "aws_codebuild_project" "code_build_project" {
     location = "https://github.com/${var.full_repository_id}.git"
     auth {
       type     = "CODECONNECTIONS"
-      resource = var.connection_arn
+      resource = resource.aws_codebuild_source_credential.example.arn
     }
   }
 
