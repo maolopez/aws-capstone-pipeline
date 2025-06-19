@@ -11,7 +11,7 @@ data "aws_caller_identity" "current" {}
 # From here extraction. Assuming you have a previous CodeConnection created manually, see the README
 
 data "aws_codestarconnections_connection" "example" {
-  arn = "arn:aws:codestar-connections:us-east-1:271271282869:connection/ff446428-36cc-45fe-af21-6a952bf60cf8"
+  arn = "arn:aws:codeconnections:us-east-1:271271282869:connection/bcf364eb-3a9d-46d9-a5a4-b65f1e5d6950"
 }
 
 output "connection_arn" {
