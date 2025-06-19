@@ -202,12 +202,9 @@ resource "aws_codepipeline" "pipeline" {
       provider        = "CodeBuild"
       version         = "1"
       input_artifacts = ["SourceOutput"]
-      output_artifacts = ["BuildOutput]
+      output_artifacts = ["BuildOutput"]
       configuration = {
-        ProjectName = aws_codebuild_project.code_build_project.name
-        #ConnectionArn    = var.connection_arn
-        #FullRepositoryId = var.full_repository_id
-        #BranchName       = var.branch_name        
+        ProjectName = aws_codebuild_project.code_build_project.name      
       }
     }
   }
