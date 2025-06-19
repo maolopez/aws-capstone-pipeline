@@ -164,13 +164,14 @@ resource "aws_codepipeline" "pipeline" {
   }
 
   #trigger {
+  # provider_type = "CodeStarSourceConnection"
   # git_configuration {
-  #     source_action_name = "CodeConnections"
-  #     push {
-  #         branches {
-  #             includes = var.branch_name
-  #         }
+  #   source_action_name = "CodeConnections"
+  #   push {
+  #     branches {
+  #       includes = [var.branch_name]
   #     }
+  #   }
   # }
   #}
 
@@ -188,20 +189,22 @@ resource "aws_codepipeline" "pipeline" {
         ConnectionArn    = var.connection_arn
         FullRepositoryId = var.full_repository_id
         BranchName       = var.branch_name
+        DetectChanges    = true
       }
     }
   }
 
   stage {
-    name = "Build_and_deploy"
+    name = "Build"
 
     action {
-      name            = "CI_Python_Build_Push"
-      category        = "Build"
-      owner           = "AWS"
-      provider        = "CodeBuild"
-      version         = "1"
-      input_artifacts = ["SourceOutput"]
+      name             = "Build"
+      category         = "Build"
+      owner            = "AWS"
+      provider         = "CodeBuild"
+      version          = "1"
+      input_artifacts  = ["SourceOutput"]
+      output_artifacts = ["BuildOutput"]
       configuration = {
         ProjectName = aws_codebuild_project.code_build_project.name
       }
