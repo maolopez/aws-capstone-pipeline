@@ -72,8 +72,10 @@ resource "aws_codebuild_project" "code_build_project" {
   source {
     type     = "CODESTAR"
     location = var.connection_arn
+    buildspec = "buildspec.yml"
     auth {
       type     = "OAUTH"
+      resource = var.connection_arn
     }
   }
 
