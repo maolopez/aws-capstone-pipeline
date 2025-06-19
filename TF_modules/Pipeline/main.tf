@@ -8,44 +8,6 @@ data "aws_region" "current" {}
 
 data "aws_caller_identity" "current" {}
 
-# From here extraction. Assuming you have a previous CodeConnection created manually, see the README
-
-data "aws_codestarconnections_connection" "example" {
-  arn = "arn:aws:codeconnections:us-east-1:271271282869:connection/bcf364eb-3a9d-46d9-a5a4-b65f1e5d6950"
-}
-
-output "connection_arn" {
-  value = data.aws_codestarconnections_connection.example.arn
-}
-
-output "connection_id" {
-  value = data.aws_codestarconnections_connection.example.id
-}
-
-resource "aws_iam_policy" "codestar_connection_policy" {
-  name        = "CodeStarConnectionPolicy"
-  description = "Policy to allow use of CodeStar connection"
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow"
-        Action = [
-          "codestar-connections:UseConnection"
-        ]
-        Resource = data.aws_codestarconnections_connection.example.arn
-      }
-    ]
-  })
-}
-
-resource "aws_iam_role_policy_attachment" "attach_codestar_policy" {
-  policy_arn = aws_iam_policy.codestar_connection_policy.arn
-  role       = aws_iam_role.code_pipeline_role.name
-}
-
-# From here creation
-
 resource "aws_iam_role" "code_build_role" {
   name = "CodeBuildRole"
   assume_role_policy = jsonencode({
@@ -106,10 +68,16 @@ resource "aws_codebuild_project" "code_build_project" {
     image_pull_credentials_type = "CODEBUILD"
     privileged_mode             = false
   }
+
   source {
-    type      = "NO_SOURCE"
-    buildspec = var.ci_code_build_spec
+    type     = "GITHUB"
+    location = "https://github.com/${var.full_repository_id}.git"
+    auth {
+      type     = "CODECONNECTIONS"
+      resource = var.connection_arn
+    }
   }
+
   cache {
     type = "NO_CACHE"
   }

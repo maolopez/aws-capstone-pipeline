@@ -18,7 +18,7 @@ module "my_pipeline" {
   branch_name        = local.branch_name
   code_pipeline_name = local.code_pipeline_name
   code_build_name    = local.code_build_name
-  connection_arn     = "arn:aws:codeconnections:${local.region}:${local.awsaccount}:connection/ff446428-36cc-45fe-af21-6a952bf60cf8" # Developer Tools/Settings/Connections
+  connection_arn     = "arn:aws:codeconnections:${local.region}:${local.awsaccount}:connection/bcf364eb-3a9d-46d9-a5a4-b65f1e5d6950" # Developer Tools/Settings/Connections
   full_repository_id = local.full_repository_id                                                                                      # This targets you App's source repo"
 
 }
