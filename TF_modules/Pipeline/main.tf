@@ -70,8 +70,8 @@ resource "aws_codebuild_project" "code_build_project" {
   }
 
   source {
-    type     = "CODESTAR"
-    location = var.connection_arn
+    type     = "GITHUB"
+    location = "https://github.com/${var.full_repository_id}.git"
     buildspec = "buildspec.yml"
     auth {
       type     = "OAUTH"
