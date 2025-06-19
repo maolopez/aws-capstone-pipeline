@@ -15,7 +15,10 @@ Assumptions
 
 5- The App repository has an buildspec.yml file like for example https://github.com/maolopez/ut_anagramma/blob/develop/buildspec.yml
 
-6- You may need AWS GitHub App
+6- You may need AWS GitHub App:
+   A- On Github go to settings -> integrations (Click on applications)
+   B- On AWS go to Developer Tools and then Connections. (Create a connection) This should be reflected in (A)
+   C- You may need to edit your terraform created pipeline to hook the connection.
 
 
 General description
