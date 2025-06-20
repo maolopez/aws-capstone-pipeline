@@ -75,13 +75,13 @@ resource "aws_codebuild_project" "code_build_project" {
   }
 
   source {
-    type     = "GITHUB"
-    location = "https://github.com/${var.full_repository_id}.git"
+    type      = "GITHUB"
+    location  = "https://github.com/${var.full_repository_id}.git"
     buildspec = "buildspec.yml"
-    auth {
-      type     = "CODECONNECTIONS"
-      resource = aws_codestarconnections_connection.codestarconn.arn     #var.connection_arn
-    }
+    #auth {
+    #type     = "CODECONNECTIONS"
+    #  resource = aws_codestarconnections_connection.codestarconn.arn     #var.connection_arn
+    #}
   }
 
   cache {
@@ -166,25 +166,26 @@ resource "aws_iam_role_policy_attachment" "attach_github_ecr_policy" {
 }
 
 resource "aws_codepipeline" "pipeline" {
-  name     = var.code_pipeline_name
-  role_arn = aws_iam_role.code_pipeline_role.arn
+  name          = var.code_pipeline_name
+  role_arn      = aws_iam_role.code_pipeline_role.arn
+  pipeline_type = "V2"
 
   artifact_store {
     location = aws_s3_bucket.code_pipeline_artifacts_bucket.id
     type     = "S3"
   }
 
-  #trigger {
-  # provider_type = "CodeStarSourceConnection"
-  # git_configuration {
-  #   source_action_name = "CodeConnections"
-  #   push {
-  #     branches {
-  #       includes = [var.branch_name]
-  #     }
-  #   }
-  # }
-  #}
+  trigger {
+    provider_type = "CodeStarSourceConnection"
+    git_configuration {
+      source_action_name = "CodeConnections"
+      push {
+        branches {
+          includes = [var.branch_name]
+        }
+      }
+    }
+  }
 
   stage {
     name = "Source"
