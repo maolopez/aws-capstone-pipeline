@@ -33,14 +33,25 @@ resource "aws_iam_policy" "code_build_default_policy" {
         ]
       },
       {
-        Effect   = "Allow"
-        Action   = ["codebuild:BatchPutCodeCoverages", "codebuild:BatchPutTestCases", "codebuild:CreateReport", "codebuild:CreateReportGroup", "codebuild:UpdateReport"]
-        Resource = "arn:${data.aws_partition.current.partition}:codebuild:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:report-group/${var.code_build_name}-*"
+        Effect = "Allow"
+        Action = ["codebuild:BatchPutCodeCoverages", "codebuild:BatchPutTestCases", "codebuild:CreateReport", "codebuild:CreateReportGroup", "codebuild:UpdateReport"]
+        Resource = [
+          "arn:${data.aws_partition.current.partition}:codebuild:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:report-group/${var.code_build_name}-*"
+        ]
       },
       {
-        Effect   = "Allow"
-        Action   = ["s3:GetBucket*", "s3:GetObject*", "s3:List*", "s3:PutObject"]
-        Resource = "${aws_s3_bucket.code_pipeline_artifacts_bucket.arn}/*"
+        Effect = "Allow"
+        Action = ["s3:GetBucket*", "s3:GetObject*", "s3:List*", "s3:PutObject"]
+        Resource = [
+          "${aws_s3_bucket.code_pipeline_artifacts_bucket.arn}/*"
+        ]
+      },
+      {
+        Effect = "Allow"
+        Action = ["codestar-connections:UseConnection"]
+        Resource = [
+          "arn:${data.aws_partition.current.partition}:codebuild:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:report-group/${var.code_build_name}-*"
+        ]
       }
     ]
   })
@@ -78,10 +89,10 @@ resource "aws_codebuild_project" "code_build_project" {
     type      = "GITHUB"
     location  = "https://github.com/${var.full_repository_id}.git"
     buildspec = "buildspec.yml"
-    #auth {
-    #type     = "CODECONNECTIONS"
-    #  resource = aws_codestarconnections_connection.codestarconn.arn
-    #}
+    auth {
+      type     = "CODECONNECTIONS"
+      resource = aws_codestarconnections_connection.codestarconn.arn
+    }
   }
 
   cache {
