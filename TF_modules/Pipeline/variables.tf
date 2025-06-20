@@ -3,13 +3,13 @@ variable "region" {
   description = "default region"
 }
 
-variable "connection_arn" {
-  description = "The CodeConnections ARN for your source repository."
+variable "full_repository_id" {
+  description = "The full repository ID to use with your CodeConnections connection."
   type        = string
 }
 
-variable "full_repository_id" {
-  description = "The full repository ID to use with your CodeConnections connection."
+variable "codestarconnection" {
+  description = "The AWS Developer Tools GitHub App connection to your personal repo"
   type        = string
 }
 
