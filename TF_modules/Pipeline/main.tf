@@ -50,7 +50,7 @@ resource "aws_iam_policy" "code_build_default_policy" {
         Effect = "Allow"
         Action = ["codestar-connections:UseConnection"]
         Resource = [
-          "arn:${data.aws_partition.current.partition}:codebuild:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:report-group/${var.code_build_name}-*"
+          aws_codestarconnections_connection.codestarconn.arn
         ]
       }
     ]
