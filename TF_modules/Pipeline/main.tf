@@ -197,7 +197,7 @@ resource "aws_codepipeline" "pipeline" {
       version          = "1"
       output_artifacts = ["SourceOutput"]
       configuration = {
-        ConnectionArn    = aws_codestarconnections_connection.codestarconn.arn. #var.connection_arn
+        ConnectionArn    = aws_codestarconnections_connection.codestarconn.arn #var.connection_arn
         FullRepositoryId = var.full_repository_id
         BranchName       = var.branch_name
         DetectChanges    = true
