@@ -54,7 +54,7 @@ resource "aws_iam_role_policy_attachment" "attach_codebuild_policy" {
 
 resource "aws_codestarconnections_connection" "codestarconn" {
   name          = "codestarconn"
-  provider_type = "GITHUB"
+  provider_type = "GitHub"
 }
 
 resource "aws_codebuild_project" "code_build_project" {
