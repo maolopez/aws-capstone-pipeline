@@ -52,6 +52,11 @@ resource "aws_iam_role_policy_attachment" "attach_codebuild_policy" {
   role       = aws_iam_role.code_build_role.name
 }
 
+resource "aws_codestarconnections_connection" "codestarconn" {
+  name          = "codestarconn"
+  provider_type = "GITHUB"
+}
+
 resource "aws_codebuild_project" "code_build_project" {
   name         = var.code_build_name
   description  = "Build python source code"
@@ -74,8 +79,8 @@ resource "aws_codebuild_project" "code_build_project" {
     location = "https://github.com/${var.full_repository_id}.git"
     buildspec = "buildspec.yml"
     auth {
-      type     = "OAUTH"
-      resource = var.connection_arn
+      type     = "CODECONNECTIONS"
+      resource = aws_codestarconnections_connection.codestarconn.arn     #var.connection_arn
     }
   }
 
@@ -192,7 +197,7 @@ resource "aws_codepipeline" "pipeline" {
       version          = "1"
       output_artifacts = ["SourceOutput"]
       configuration = {
-        ConnectionArn    = var.connection_arn
+        ConnectionArn    = aws_codestarconnections_connection.codestarconn.arn. #var.connection_arn
         FullRepositoryId = var.full_repository_id
         BranchName       = var.branch_name
         DetectChanges    = true
